@@ -1,51 +1,49 @@
 package main
 
 import (
-	"fmt"
+	"os"
 	"log"
-	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 	"github.com/Diddern/gRPC-helloworld/pb"
 	"google.golang.org/grpc"
+
+	"time"
 )
 
 func main() {
 	// Connect to GCD service
-	conn, err := grpc.Dial("gcd-service:3000", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:3000", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
-	gcdClient := pb.NewGCDServiceClient(conn)
 
-	// Set up HTTP server
-	r := gin.Default()
-	r.GET("/gcd/:a/:b", func(c *gin.Context) {
-		// Parse parameters
-		a, err := strconv.ParseUint(c.Param("a"), 10, 64)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter A"})
-			return
-		}
-		b, err := strconv.ParseUint(c.Param("b"), 10, 64)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter B"})
-			return
-		}
-		// Call GCD service
-		req := &pb.GCDRequest{A: a, B: b}
-		if res, err := gcdClient.Compute(c, req); err == nil {
-			c.JSON(http.StatusOK, gin.H{
-				"result": fmt.Sprint(res.Result),
-			})
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
-	})
+	//defer conn.Close()
 
-	// Run HTTP server
-	if err := r.Run(":3000"); err != nil {
-		log.Fatalf("Failed to run server: %v", err)
+
+	if len(os.Args) < 2 {
+		log.Fatal("No arguments provided, please enter two numbers.")
+		os.Exit(2)
 	}
+	a, err := strconv.ParseUint(os.Args[1], 10, 64)
+	if err != nil {
+		log.Fatal("Invalid parameter A")
+		return
+	}
+	b, err := strconv.ParseUint(os.Args[2], 10, 64)
+	if err != nil {
+		log.Fatal("Invalid parameter B")
+		return
+	}
+
+	gcdClient := pb.NewGCDServiceClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	r, err := gcdClient.Compute(ctx, &pb.GCDRequest{A: a, B: b})
+	if err != nil {
+		log.Fatal("could not compute: ", err)
+	}
+	log.Print("The GCD of " + os.Args[1] + " and " + os.Args[2] + " = ", r.Result)
 }
+
