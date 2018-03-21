@@ -1,6 +1,6 @@
 FROM golang:1.9.1
 
-WORKDIR ~/go/src/github.com/Diddern/gRPC-helloworld/api
+WORKDIR /src/github.com/Diddern/gRPC-helloworld/api
 COPY api .
 COPY pb ../pb
 
