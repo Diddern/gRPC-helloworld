@@ -3,12 +3,13 @@ package main
 import (
 	"os"
 	"log"
+	"time"
 	"strconv"
 	"golang.org/x/net/context"
 	"github.com/Diddern/gRPC-helloworld/pb"
 	"google.golang.org/grpc"
 
-	"time"
+
 )
 
 func main() {
@@ -18,18 +19,19 @@ func main() {
 		log.Fatalf("Dial failed: %v", err)
 	}
 
-	//defer conn.Close()
-
-
-	if len(os.Args) < 2 {
-		log.Fatal("No arguments provided, please enter two numbers.")
+	//Check for OS arguments
+	if len(os.Args) != 3 {
+		log.Fatal("Wrong number of arguments, please enter two integers.")
 		os.Exit(2)
 	}
+
+	//Parse first argument
 	a, err := strconv.ParseUint(os.Args[1], 10, 64)
 	if err != nil {
 		log.Fatal("Invalid parameter A")
 		return
 	}
+	//parse second argument
 	b, err := strconv.ParseUint(os.Args[2], 10, 64)
 	if err != nil {
 		log.Fatal("Invalid parameter B")
@@ -46,4 +48,3 @@ func main() {
 	}
 	log.Print("The GCD of " + os.Args[1] + " and " + os.Args[2] + " = ", r.Result)
 }
-
