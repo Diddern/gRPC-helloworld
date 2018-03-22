@@ -8,12 +8,16 @@ A small service to test gRPC
 go get https://github.com/Diddern/gRPC-simpleGCDService 
 ``` 
 
-##Running
+## Running
 
-Start the server:
+Run the server:
 
-``` go run gcd/main.go ```
+``` 
+go run gcd/main.go 
+```
 
 Calculate the GCD of 294 and 462:
 
-``` go run client/main.go 294 462 ```
+``` 
+go run client/main.go 294 462 
+```
