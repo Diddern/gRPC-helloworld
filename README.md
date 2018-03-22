@@ -21,3 +21,13 @@ Calculate the GCD of 294 and 462:
 ``` 
 go run client/main.go 294 462 
 ```
+
+## Rebuilding the protobuf
+
+Navigate to the pb/ directory and run the following command:
+
+```
+protoc -I . --go_out=plugins=grpc:. ./*.proto
+```
+
+Compilation should produce gcd.pb.go file.
