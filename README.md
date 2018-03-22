@@ -5,13 +5,13 @@ A small service to test gRPC
 ## Installing
 
 ``` 
-go get https://github.com/Diddern/gRPC-simpleGCDService 
+git clone https://github.com/Diddern/gRPC-simpleGCDService && cd gRPC-simpleGCDService/
 ``` 
 
 ## Running
 
-Run the server:
-
+Running the server:  
+This will start the server and listen for gRPC-requests on port 3000.
 ``` 
 go run gcd/main.go 
 ```
