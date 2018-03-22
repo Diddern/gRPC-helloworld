@@ -1,12 +1,11 @@
 package main
 import (
-"log"
-"net"
-// Change this for your own project
-"github.com/Diddern/gRPC-helloworld/pb"
-context "golang.org/x/net/context"
-"google.golang.org/grpc"
-"google.golang.org/grpc/reflection"
+	"log"
+	"net"
+	"github.com/Diddern/gRPC-helloworld/pb"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
@@ -16,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
+	log.Print("Listening on port 3000:")
 	s := grpc.NewServer()
 	pb.RegisterGCDServiceServer(s, &server{})
 	reflection.Register(s)
