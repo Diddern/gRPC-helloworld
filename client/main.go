@@ -6,7 +6,7 @@ import (
 	"time"
 	"strconv"
 	"golang.org/x/net/context"
-	"github.com/Diddern/gRPC-helloworld/pb"
+	"github.com/Diddern/gRPC-simpleGCDService/pb"
 	"google.golang.org/grpc"
 
 

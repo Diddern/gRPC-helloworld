@@ -2,7 +2,7 @@ package main
 import (
 	"log"
 	"net"
-	"github.com/Diddern/gRPC-helloworld/pb"
+	"github.com/Diddern/gRPC-simpleGCDService/pb"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
