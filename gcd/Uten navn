@@ -1,0 +1,1 @@
+not (mdns or bjnp or hsrp or ospf or arp or icmpv6 or llmnr or pim or ntp or ssdp)

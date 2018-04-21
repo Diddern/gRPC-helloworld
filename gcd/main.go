@@ -2,8 +2,8 @@ package main
 import (
 	"log"
 	"net"
+	"context"
 	"github.com/Diddern/gRPC-simpleGCDService/pb"
-	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -31,4 +31,3 @@ func (s *server) Compute(ctx context.Context, r *pb.GCDRequest) (*pb.GCDResponse
 	}
 	return &pb.GCDResponse{Result: a}, nil
 }
-
