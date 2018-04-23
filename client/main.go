@@ -8,16 +8,23 @@ import (
 	"golang.org/x/net/context"
 	"github.com/Diddern/gRPC-simpleGCDService/pb"
 	"google.golang.org/grpc"
-
-
+	"google.golang.org/grpc/credentials"
 )
 
 func main() {
-	// Connect to GCD service
-	conn, err := grpc.Dial("localhost:5001", grpc.WithInsecure())
+
+	creds, err := credentials.NewClientTLSFromFile("../gcd/server-cert.pem", "")
 	if err != nil {
-		log.Fatalf("Dial failed: %v", err)
+		log.Fatalf("cert load error: %s", err)
 	}
+
+	// Connect securely to GCD service
+	conn, err := grpc.Dial("localhost:5001", grpc.WithTransportCredentials(creds))
+	if err != nil {
+		log.Fatalf("Failed to start gRPC connection: %v", err)
+	}
+	defer conn.Close()
+
 
 	//Check for OS arguments
 	if len(os.Args) != 3 {
