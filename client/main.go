@@ -42,9 +42,9 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := gcdClient.Compute(ctx, &pb.GCDRequest{A: a, B: b})
+	gcdResponse, err := gcdClient.Compute(ctx, &pb.GCDRequest{A: a, B: b})
 	if err != nil {
 		log.Fatal("could not compute: ", err)
 	}
-	log.Print("The GCD of " + os.Args[1] + " and " + os.Args[2] + " = ", r.Result)
+	log.Print("The GCD of " + os.Args[1] + " and " + os.Args[2] + " = ", gcdResponse.Result)
 }
