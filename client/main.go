@@ -11,15 +11,19 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+var addressAndPortNumberOut =  "localhost:5001"
+var pathToCert = "../gcd/server-cert.pem"
+
+
 func main() {
 
-	creds, err := credentials.NewClientTLSFromFile("../gcd/server-cert.pem", "")
+	creds, err := credentials.NewClientTLSFromFile(pathToCert, "")
 	if err != nil {
 		log.Fatalf("cert load error: %s", err)
 	}
 
 	// Connect securely to GCD service
-	conn, err := grpc.Dial("localhost:5001", grpc.WithTransportCredentials(creds))
+	conn, err := grpc.Dial(addressAndPortNumberOut, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("Failed to start gRPC connection: %v", err)
 	}

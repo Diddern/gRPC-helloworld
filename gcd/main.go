@@ -14,20 +14,25 @@ type server struct{}
 func main() {
 
 	portNumber := ":3000"
-	creds, err := credentials.NewServerTLSFromFile("gcd/server-cert.pem", "gcd/server-key.pem")
+	pathToCert := "gcd/server-cert.pem"
+	pathToKey := "gcd/server-key.pem"
+
+	//Load cert and key from file
+	creds, err := credentials.NewServerTLSFromFile(pathToCert, pathToKey)
 	if err != nil {
 		log.Fatalf("Failed to setup tls: %v", err)
 	}
+
+	//Listen for incoming connections.
 	lis, err := net.Listen("tcp", portNumber)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	log.Print("Listening on port 3000:")
+	log.Printf("Listening on port %v", portNumber)
 
-
+	//Create gRPC Server
 	s := grpc.NewServer(
 		grpc.Creds(creds),
-		//grpc.UnaryInterceptor(AuthInterceptor),
 	)
 	pb.RegisterGCDServiceServer(s, &server{})
 	reflection.Register(s)
