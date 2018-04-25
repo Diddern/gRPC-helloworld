@@ -7,8 +7,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 )
 
 type server struct{}
@@ -29,7 +27,7 @@ func main() {
 
 	s := grpc.NewServer(
 		grpc.Creds(creds),
-		grpc.UnaryInterceptor(AuthInterceptor),
+		//grpc.UnaryInterceptor(AuthInterceptor),
 	)
 	pb.RegisterGCDServiceServer(s, &server{})
 	reflection.Register(s)
@@ -44,19 +42,4 @@ func (s *server) Compute(ctx context.Context, r *pb.GCDRequest) (*pb.GCDResponse
 		a, b = b, a%b
 	}
 	return &pb.GCDResponse{Result: a}, nil
-}
-
-func AuthInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	meta, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil, grpc.Errorf(codes.Unauthenticated, "missing context metadata")
-	}
-	if len(meta["authorization"]) != 1 {
-		return nil, grpc.Errorf(codes.Unauthenticated, "invalid token")
-	}
-	if meta["authorization"][0] != "valid-token" {
-		return nil, grpc.Errorf(codes.Unauthenticated, "invalid token")
-	}
-
-	return handler(ctx, req)
 }
