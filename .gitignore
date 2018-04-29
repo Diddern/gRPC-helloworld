@@ -94,3 +94,6 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+
+#Certificates
+*.pem

@@ -14,8 +14,8 @@ type server struct{}
 func main() {
 
 	portNumber := ":3000"
-	pathToCert := "gcd/server-cert.pem"
-	pathToKey := "gcd/server-key.pem"
+	pathToCert := "certs/server-cert.pem"
+	pathToKey := "certs/server-key.pem"
 
 	//Load cert and key from file
 	creds, err := credentials.NewServerTLSFromFile(pathToCert, pathToKey)

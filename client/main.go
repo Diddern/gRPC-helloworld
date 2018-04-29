@@ -12,7 +12,7 @@ import (
 )
 
 var addressAndPortNumberOut =  "localhost:5001"
-var pathToCert = "../gcd/server-cert.pem"
+var pathToCert = "../certs/server-cert.pem"
 
 
 func main() {
